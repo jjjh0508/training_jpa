@@ -1,5 +1,7 @@
 package com.jihwan.springdata.menu.entity;
 
+import com.jihwan.springdata.menu.dto.CategoryDTO;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -20,10 +22,16 @@ public class Category {
 
 
 
+
     @JoinColumn(name = "category_code")
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Menu> menuList;
 
+
+    public Category(CategoryDTO categoryDTO) {
+        this.categoryName = categoryDTO.getCategoryName();
+        this.refCategoryCode = categoryDTO.getRefCategoryCode();
+    }
     public Category(int categoryCode, String categoryName, Integer refCategoryCode, List<Menu> menuList) {
         this.categoryCode = categoryCode;
         this.categoryName = categoryName;
