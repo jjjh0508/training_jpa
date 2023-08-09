@@ -54,4 +54,19 @@ public class CategoryController {
             return ResponseEntity.status(500).body("카테고리 등록 실패했습니다.");
         }
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updateCategory(CategoryDTO categoryDTO) {
+        Category category = categoryService.findCategoryByCode(categoryDTO.getCategoryCode());
+        if (Objects.isNull(category)) {
+            return ResponseEntity.ok().body("데이터가 존재하지 않습니다.");
+        }
+        int result = categoryService.update(category,categoryDTO);
+
+        if (result > 0) {
+            return ResponseEntity.ok().body("카테고리 수정에 성공했습니다.");
+        } else {
+            return ResponseEntity.status(500).body("카테고리 수정에 실패했습니다.");
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.jihwan.springdata.menu.service;
 
+import com.jihwan.springdata.menu.dto.CategoryDTO;
 import com.jihwan.springdata.menu.entity.Category;
 import com.jihwan.springdata.menu.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
@@ -34,5 +35,21 @@ public class CategoryService {
     public Category findCategoryByCode(int categoryCode) {
         Category category = categoryRepository.findById(categoryCode);
         return category;
+    }
+
+    public int update(Category category, CategoryDTO categoryDTO) {
+        if (!Objects.isNull(categoryDTO.getCategoryName())) {
+            category.setCategoryName(categoryDTO.getCategoryName());
+        }
+        if (!Objects.isNull(categoryDTO.getRefCategoryCode())) {
+            category.setRefCategoryCode(categoryDTO.getRefCategoryCode());
+        }
+        Category result = categoryRepository.save(category);
+
+        if (Objects.isNull(result)) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 }
