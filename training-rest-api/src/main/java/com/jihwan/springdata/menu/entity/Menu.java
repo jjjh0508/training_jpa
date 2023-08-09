@@ -1,5 +1,6 @@
 package com.jihwan.springdata.menu.entity;
 
+import com.jihwan.springdata.menu.dto.MenuDTO;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Column;
@@ -31,7 +32,13 @@ public class Menu {
     public Menu() {
 
     }
-
+    public Menu(MenuDTO menuDTO) {
+        this.menuCode = menuDTO.getMenuCode();
+        this.menuName = menuDTO.getMenuName();
+        this.menuPrice = menuDTO.getMenuPrice();
+        this.orderableStatus = menuDTO.getOrderableStatus();
+        this.categoryCode = menuDTO.getCategoryCode();
+    }
     public Menu(int menuCode, String menuName, int menuPrice, int categoryCode, String orderableStatus) {
         this.menuCode = menuCode;
         this.menuName = menuName;

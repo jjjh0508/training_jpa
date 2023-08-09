@@ -50,10 +50,10 @@ public class MenuController {
 
     //localhost:8000/menus/category/4
     //?categorycode=4
-    @GetMapping("/category/{categorycode}")
-    public ResponseEntity<List<?>> findAllCategoryMenu(@PathVariable int categorycode) {
+    @GetMapping("/category/{categoryCode}")
+    public ResponseEntity<List<?>> findAllCategoryMenu(@PathVariable int categoryCode) {
         System.out.println("요청");
-        List<Menu> menuList = menuService.findAllCategoryMenu(categorycode);
+        List<Menu> menuList = menuService.findAllCategoryMenu(categoryCode);
         List<String> error = new ArrayList<>();
         error.add("해당하는 메뉴가 없습니다.");
         if (menuList.size() == 0) {
@@ -63,5 +63,52 @@ public class MenuController {
 
         return ResponseEntity.ok().body(menuDTOS);
     }
+
+    @PostMapping("/regist")
+    public ResponseEntity<?>regist(MenuDTO menuDTO) {
+        Menu menu = new Menu(menuDTO);
+
+        System.out.println(menu);
+        int result = menuService.registMenu(menu);
+
+        if (result > 0) {
+            return ResponseEntity.ok().body("등록성공");
+        } else {
+            return ResponseEntity.status(500).body("등록실패");
+        }
+
+    }
+
+
+    @DeleteMapping("{menuCode}")
+    public ResponseEntity<?> delete(@PathVariable int menuCode) {
+        int result = menuService.deleteCode(menuCode);
+
+        if (result > 0) {
+           return ResponseEntity.ok().body("삭제 성공했습니다.");
+        } else {
+           return ResponseEntity.status(500).body("삭제 실패했습니다.");
+        }
+    }
+
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updateMenu(MenuDTO menuDTO) {
+        Menu findMenu = menuService.findMenuByCode(menuDTO.getMenuCode());
+
+        if (Objects.isNull(findMenu)) {
+           return ResponseEntity.ok().body("데이터가 존재하지 않습니다.");
+        }
+
+
+        int result = menuService.update(findMenu,menuDTO );
+
+        if (result > 0) {
+            return ResponseEntity.ok().body("수정 성공했습니다");
+        } else {
+            return ResponseEntity.status(500).body("수정 실패했습니다.");
+        }
+    }
+
 
 }
