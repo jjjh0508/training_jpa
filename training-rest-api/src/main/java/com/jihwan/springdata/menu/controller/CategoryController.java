@@ -2,6 +2,7 @@ package com.jihwan.springdata.menu.controller;
 
 import com.jihwan.springdata.menu.dto.CategoryDTO;
 import com.jihwan.springdata.menu.entity.Category;
+import com.jihwan.springdata.menu.entity.Menu;
 import com.jihwan.springdata.menu.service.CategoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -67,6 +68,30 @@ public class CategoryController {
             return ResponseEntity.ok().body("카테고리 수정에 성공했습니다.");
         } else {
             return ResponseEntity.status(500).body("카테고리 수정에 실패했습니다.");
+        }
+    }
+
+    @DeleteMapping("{categoryCode}")
+    public ResponseEntity<?> deleteCategory(@PathVariable int categoryCode) {
+        System.out.println(categoryCode);
+        Category category = categoryService.findCategoryByCode(categoryCode);
+
+
+        if (Objects.isNull(category)) {
+           return ResponseEntity.status(404).body("카테고리가 존재하지 않습니다.");
+        }
+
+
+        if (category.getMenuList().size()>0) {
+            return ResponseEntity.status(404).body("적용된 메뉴가 있습니다.");
+        }
+        
+        int result = categoryService.deleteCategory(categoryCode);
+
+        if (result > 0) {
+            return ResponseEntity.ok().body("카테고리 삭제 성공했습니다.");
+        } else {
+            return ResponseEntity.status(500).body("카테고리 삭제 실패했습니다.");
         }
     }
 }

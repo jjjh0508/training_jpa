@@ -38,6 +38,8 @@ public class CategoryService {
     }
 
     public int update(Category category, CategoryDTO categoryDTO) {
+
+        category.setCategoryCode(categoryDTO.getCategoryCode());
         if (!Objects.isNull(categoryDTO.getCategoryName())) {
             category.setCategoryName(categoryDTO.getCategoryName());
         }
@@ -45,11 +47,21 @@ public class CategoryService {
             category.setRefCategoryCode(categoryDTO.getRefCategoryCode());
         }
         Category result = categoryRepository.save(category);
-
+        System.out.println(result);
         if (Objects.isNull(result)) {
             return 0;
         } else {
             return 1;
+        }
+    }
+
+    public int deleteCategory(int categoryCode) {
+        categoryRepository.deleteById(categoryCode);
+        Category category = categoryRepository.findById(categoryCode);
+        if (Objects.isNull(category)) {
+            return 1;
+        } else {
+            return 0;
         }
     }
 }

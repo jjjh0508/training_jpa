@@ -82,6 +82,11 @@ public class MenuController {
 
     @DeleteMapping("{menuCode}")
     public ResponseEntity<?> delete(@PathVariable int menuCode) {
+        Menu menu = menuService.findMenuByCode(menuCode);
+
+        if (Objects.isNull(menu)) {
+            return ResponseEntity.status(404).body("메뉴가 존재하지 않습니다.");
+        }
         int result = menuService.deleteCode(menuCode);
 
         if (result > 0) {
