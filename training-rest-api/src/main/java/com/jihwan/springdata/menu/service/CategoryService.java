@@ -4,6 +4,7 @@ import com.jihwan.springdata.menu.dto.CategoryDTO;
 import com.jihwan.springdata.menu.entity.Category;
 import com.jihwan.springdata.menu.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,6 +23,8 @@ public class CategoryService {
         return category;
     }
 
+
+    @Transactional
     public int registCategory(Category category) {
         Category category1 = categoryRepository.save(category);
 
@@ -37,9 +40,11 @@ public class CategoryService {
         return category;
     }
 
+    @Transactional
     public int update(Category category, CategoryDTO categoryDTO) {
 
-        category.setCategoryCode(categoryDTO.getCategoryCode());
+
+//        category.setCategoryCode(categoryDTO.getCategoryCode());
         if (!Objects.isNull(categoryDTO.getCategoryName())) {
             category.setCategoryName(categoryDTO.getCategoryName());
         }
@@ -55,6 +60,7 @@ public class CategoryService {
         }
     }
 
+    @Transactional
     public int deleteCategory(int categoryCode) {
         categoryRepository.deleteById(categoryCode);
         Category category = categoryRepository.findById(categoryCode);
