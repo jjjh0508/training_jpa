@@ -3,12 +3,10 @@ package com.jihwan.springdata.order.controller;
 
 import com.jihwan.springdata.order.dto.MenuOrderDTO;
 import com.jihwan.springdata.menu.service.MenuService;
+import com.jihwan.springdata.order.entity.Order;
 import com.jihwan.springdata.order.service.OrderService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
@@ -26,6 +24,26 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+
+    @GetMapping
+    public ResponseEntity<List<?>> findAllOrder() {
+        List<Order> orders = orderService.findAllOrder();
+
+        System.out.println(orders);
+        return ResponseEntity.ok().body(orders);
+
+    }
+
+
+    @GetMapping("/{orderCode}")
+    public ResponseEntity<Object> findOrderByCode(@PathVariable int orderCode) {
+        System.out.println(orderCode);
+        Order order = orderService.findOrderByCode(orderCode);
+        for (int i = 0; i < order.getOrderMenuList().size(); i++) {
+            System.out.println(order.getOrderMenuList().get(i).getMenu());
+        }
+        return ResponseEntity.ok().body(order);
+    }
     @PostMapping("/regist")
     public ResponseEntity<?> orderRegist(@RequestBody List<MenuOrderDTO> menuOrderDTO) {
 
@@ -41,5 +59,7 @@ public class OrderController {
             return ResponseEntity.status(500).body("주문 실패했습니다.");
         }
     }
+
+
 
 }

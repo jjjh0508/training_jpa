@@ -1,5 +1,7 @@
 package com.jihwan.springdata.order.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 
@@ -26,6 +28,7 @@ public class Order {
     @Column(name = "total_order_price")
     private int totalOrderPrice;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "order")
     private List<OrderMenu> orderMenuList;
 
@@ -88,7 +91,6 @@ public class Order {
                 ", orderDate=" + orderDate +
                 ", orderTime=" + orderTime +
                 ", totalOrderPrice=" + totalOrderPrice +
-                ", orderMenuList=" + orderMenuList +
                 '}';
     }
 }

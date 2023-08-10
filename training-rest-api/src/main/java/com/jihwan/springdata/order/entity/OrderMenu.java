@@ -73,7 +73,7 @@ public class OrderMenu {
     public String toString() {
         return "OrderMenu{" +
                 "orderPk=" + orderPk +
-                ", order=" + order +
+
                 ", menu=" + menu +
                 ", orderAmount=" + orderAmount +
                 '}';

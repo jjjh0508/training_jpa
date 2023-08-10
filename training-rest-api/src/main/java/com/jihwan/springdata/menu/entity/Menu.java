@@ -3,10 +3,7 @@ package com.jihwan.springdata.menu.entity;
 import com.jihwan.springdata.menu.dto.MenuDTO;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "tbl_menu")
@@ -23,11 +20,14 @@ public class Menu {
     @Column(name = "menu_price")
     private int menuPrice;
 
+
     @Column(name = "category_code")
     private int categoryCode;
 
     @Column(name = "orderable_status")
     private String  orderableStatus;
+
+
 
     public Menu() {
 

@@ -7,6 +7,7 @@ import com.jihwan.springdata.order.entity.OrderMenu;
 import com.jihwan.springdata.menu.entity.OrderPk;
 import com.jihwan.springdata.menu.repository.MenuRepository;
 import com.jihwan.springdata.order.repository.OrderRepository;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,5 +56,15 @@ public class OrderService {
 
 
 
+    }
+
+    public List<Order> findAllOrder() {
+         List<Order> orderList = orderRepository.findAll();
+         return orderList;
+    }
+
+    public Order findOrderByCode(int orderCode) {
+        Order order = orderRepository.findById(orderCode);
+        return order;
     }
 }
