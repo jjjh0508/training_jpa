@@ -1,7 +1,6 @@
 package com.jihwan.springdata.order.entity;
 
 import com.jihwan.springdata.menu.entity.Menu;
-import com.jihwan.springdata.menu.entity.OrderPk;
 
 import javax.persistence.*;
 
@@ -13,13 +12,13 @@ public class OrderMenu {
     private OrderPk orderPk;
 
     @MapsId("orderCode")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "order_code")
     private Order order;
 
 
     @MapsId("menuCode")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne //cascade 옵션을 주면 에러남 같이 지울려고 한다
     @JoinColumn(name = "menu_code")
     private Menu menu;
 

@@ -3,6 +3,7 @@ package com.jihwan.springdata.order.controller;
 
 import com.jihwan.springdata.order.dto.MenuOrderDTO;
 import com.jihwan.springdata.menu.service.MenuService;
+import com.jihwan.springdata.order.dto.OrderUpdateDTO;
 import com.jihwan.springdata.order.entity.Order;
 import com.jihwan.springdata.order.service.OrderService;
 import org.springframework.http.ResponseEntity;
@@ -37,13 +38,13 @@ public class OrderController {
 
     @GetMapping("/{orderCode}")
     public ResponseEntity<Object> findOrderByCode(@PathVariable int orderCode) {
-        System.out.println(orderCode);
         Order order = orderService.findOrderByCode(orderCode);
         for (int i = 0; i < order.getOrderMenuList().size(); i++) {
             System.out.println(order.getOrderMenuList().get(i).getMenu());
         }
         return ResponseEntity.ok().body(order);
     }
+
     @PostMapping("/regist")
     public ResponseEntity<?> orderRegist(@RequestBody List<MenuOrderDTO> menuOrderDTO) {
 
@@ -60,6 +61,35 @@ public class OrderController {
         }
     }
 
+    @DeleteMapping("{orderCode}")
+    public ResponseEntity<?> orderDelete(@PathVariable int orderCode) {
+        Order findOrder = orderService.findOrderByCode(orderCode);
+        if (Objects.isNull(findOrder)) {
+            ResponseEntity.status(404).body("주문이 없습니다.");
+        }
+        int result = orderService.orderDelete(findOrder);
 
+        if (result > 0) {
+            return ResponseEntity.ok().body("주문이 취소되었습니다.");
+        } else {
+            return ResponseEntity.status(500).body("주문을 삭제할 수 없습니다.");
+        }
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> orderUpdate(@RequestBody OrderUpdateDTO orderUpdateDTO) {
+        Order findOrder = orderService.findOrderByCode(orderUpdateDTO.getOrderCode());
+
+        if (Objects.isNull(findOrder)) {
+            return ResponseEntity.status(404).body("존재하지 않는 주문입니다.");
+        }
+        int result = orderService.orderUpdate(orderUpdateDTO);
+
+        if (result > 0) {
+            return ResponseEntity.ok().body("주문이 수정되었습니다.");
+        }else {
+            return ResponseEntity.status(500).body("주문을 수정할 수 없습니다.");
+        }
+    }
 
 }

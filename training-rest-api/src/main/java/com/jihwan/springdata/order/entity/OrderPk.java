@@ -1,4 +1,4 @@
-package com.jihwan.springdata.menu.entity;
+package com.jihwan.springdata.order.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

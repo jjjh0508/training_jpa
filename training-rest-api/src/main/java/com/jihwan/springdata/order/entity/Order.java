@@ -29,7 +29,7 @@ public class Order {
     private int totalOrderPrice;
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "order")
+    @OneToMany(cascade = CascadeType.ALL ,mappedBy = "order")
     private List<OrderMenu> orderMenuList;
 
 
