@@ -6,6 +6,10 @@ import com.jihwan.springdata.menu.service.MenuService;
 import com.jihwan.springdata.order.dto.OrderUpdateDTO;
 import com.jihwan.springdata.order.entity.Order;
 import com.jihwan.springdata.order.service.OrderService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +19,12 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/orders")
+@Api(value = "주문 Api")
+@ApiResponses({
+        @ApiResponse(code = 200,message = "성공"),
+        @ApiResponse(code = 404,message = "잘못된 접근") ,
+        @ApiResponse(code = 500,message = "서버에러")
+})
 public class OrderController {
 
     private final MenuService menuService;
@@ -27,6 +37,7 @@ public class OrderController {
 
 
     @GetMapping
+    @ApiOperation(value = "전체 주문 검색 Api")
     public ResponseEntity<List<?>> findAllOrder() {
         List<Order> orders = orderService.findAllOrder();
 
@@ -37,6 +48,7 @@ public class OrderController {
 
 
     @GetMapping("/{orderCode}")
+    @ApiOperation(value = "단일 주문 검색 Api")
     public ResponseEntity<Object> findOrderByCode(@PathVariable int orderCode) {
         Order order = orderService.findOrderByCode(orderCode);
         for (int i = 0; i < order.getOrderMenuList().size(); i++) {
@@ -45,7 +57,8 @@ public class OrderController {
         return ResponseEntity.ok().body(order);
     }
 
-    @PostMapping("/regist")
+    @PostMapping
+    @ApiOperation(value = " 주문 등록 Api")
     public ResponseEntity<?> orderRegist(@RequestBody List<MenuOrderDTO> menuOrderDTO) {
 
 
@@ -62,6 +75,7 @@ public class OrderController {
     }
 
     @DeleteMapping("{orderCode}")
+    @ApiOperation(value = "주문 삭제 Api")
     public ResponseEntity<?> orderDelete(@PathVariable int orderCode) {
         Order findOrder = orderService.findOrderByCode(orderCode);
         if (Objects.isNull(findOrder)) {
@@ -76,7 +90,8 @@ public class OrderController {
         }
     }
 
-    @PutMapping("/update")
+    @PutMapping
+    @ApiOperation(value = "주문 수정 Api")
     public ResponseEntity<?> orderUpdate(@RequestBody OrderUpdateDTO orderUpdateDTO) {
         Order findOrder = orderService.findOrderByCode(orderUpdateDTO.getOrderCode());
 

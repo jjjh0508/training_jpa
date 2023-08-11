@@ -35,6 +35,8 @@ public class OrderService {
 
     @Transactional
     public int regist(List<MenuOrderDTO> menuOrderDTO) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYYMMdd");
+        SimpleDateFormat simpleDateFormatTime = new SimpleDateFormat("HH:mm:ss");
         Order order = new Order();
         List<OrderMenu> orderMenuList = new ArrayList<>();
         int totalSum = 0;
@@ -45,8 +47,7 @@ public class OrderService {
             orderMenuList.add(new OrderMenu(new OrderPk(order.getOrderCode(), menu.getMenuCode()), order, menu, menuOrderDTO.get(i).getAmount()));
             totalSum+=menu.getMenuPrice()*menuOrderDTO.get(i).getAmount();
         }
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYYMMdd");
-        SimpleDateFormat simpleDateFormatTime = new SimpleDateFormat("HH:mm:ss");
+
         order.setOrderMenuList(orderMenuList);
         order.setTotalOrderPrice(totalSum);
         order.setOrderDate(simpleDateFormat.format(new Date()));

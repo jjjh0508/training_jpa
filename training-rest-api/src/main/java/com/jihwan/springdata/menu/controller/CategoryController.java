@@ -4,6 +4,10 @@ import com.jihwan.springdata.menu.dto.CategoryDTO;
 import com.jihwan.springdata.menu.entity.Category;
 import com.jihwan.springdata.menu.entity.Menu;
 import com.jihwan.springdata.menu.service.CategoryService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +17,12 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/categorys")
+@Api(value = "카테고리 Api")
+@ApiResponses({
+        @ApiResponse(code = 200,message = "성공"),
+        @ApiResponse(code = 404,message = "잘못된 접근") ,
+        @ApiResponse(code = 500,message = "서버에러")
+})
 public class CategoryController {
     private final CategoryService categoryService;
 
@@ -22,6 +32,7 @@ public class CategoryController {
     }
 
     @GetMapping
+    @ApiOperation(value = "카테고리 전체 검색 Api")
     public ResponseEntity<List<?>> findAllCategory() {
         List<Category> categoryList = categoryService.findAll();
         if (Objects.isNull(categoryList)) {
@@ -34,6 +45,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{categoryCode}")
+    @ApiOperation(value = "카테고리 단일 검색 Api")
     public ResponseEntity<Object> findCategoryByCode(@PathVariable int categoryCode) {
         Category category = categoryService.findCategoryByCode(categoryCode);
         if (Objects.isNull(category)) {
@@ -44,7 +56,8 @@ public class CategoryController {
         return ResponseEntity.ok().body(categoryDTO);
 
     }
-    @PostMapping("/regist")
+    @PostMapping
+    @ApiOperation(value = "카테고리 등록 Api")
     public ResponseEntity<?> regist(CategoryDTO categoryDTO) {
         Category category = new Category(categoryDTO);
         int result = categoryService.registCategory(category);
@@ -56,7 +69,8 @@ public class CategoryController {
         }
     }
 
-    @PutMapping("/update")
+    @PutMapping
+    @ApiOperation(value = "카테고리 수정 Api")
     public ResponseEntity<?> updateCategory(CategoryDTO categoryDTO) {
         Category category = categoryService.findCategoryByCode(categoryDTO.getCategoryCode());
         if (Objects.isNull(category)) {
@@ -72,6 +86,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("{categoryCode}")
+    @ApiOperation(value = "카테고리 삭제 Api")
     public ResponseEntity<?> deleteCategory(@PathVariable int categoryCode) {
         System.out.println(categoryCode);
         Category category = categoryService.findCategoryByCode(categoryCode);

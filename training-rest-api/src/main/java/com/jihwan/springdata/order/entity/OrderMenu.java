@@ -18,7 +18,7 @@ public class OrderMenu {
 
 
     @MapsId("menuCode")
-    @ManyToOne //cascade 옵션을 주면 에러남 같이 지울려고 한다
+    @ManyToOne //cascade All 옵션을 주면 에러남 같이 지울려고 한다
     @JoinColumn(name = "menu_code")
     private Menu menu;
 

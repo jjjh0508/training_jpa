@@ -3,6 +3,10 @@ package com.jihwan.springdata.menu.controller;
 import com.jihwan.springdata.menu.dto.MenuDTO;
 import com.jihwan.springdata.menu.entity.Menu;
 import com.jihwan.springdata.menu.service.MenuService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +17,12 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/menus")
+@Api(value = "메뉴 Api")
+@ApiResponses({
+        @ApiResponse(code = 200,message = "성공"),
+        @ApiResponse(code = 404,message = "잘못된 접근") ,
+        @ApiResponse(code = 500,message = "서버에러")
+})
 public class MenuController {
 
     private final MenuService menuService;
@@ -22,6 +32,7 @@ public class MenuController {
     }
 
     @GetMapping("/{menuCode}")
+    @ApiOperation(value = "메뉴 단일검색 Api")
     public ResponseEntity<Object> findMenuByCode(@PathVariable int menuCode){
         Menu menu  = menuService.findMenuByCode(menuCode);
         if (Objects.isNull(menu)) {
@@ -36,6 +47,7 @@ public class MenuController {
 
 
     @GetMapping
+    @ApiOperation(value = "메뉴 리스트검색 Api")
     public ResponseEntity<List<?>> findAllmenu() {
         List<Menu> menuList = menuService.findAll();
         if (Objects.isNull(menuList)) {
@@ -50,10 +62,11 @@ public class MenuController {
 
     //localhost:8000/menus/category/4
     //?categorycode=4
-    @GetMapping("/category/{categoryCode}")
-    public ResponseEntity<List<?>> findAllCategoryMenu(@PathVariable int categoryCode) {
+    @GetMapping("/search")
+    @ApiOperation(value = "카테고리별 메뉴 검색 Api")
+    public ResponseEntity<List<?>> findAllCategoryMenu(@RequestParam int categorycode) {
         System.out.println("요청");
-        List<Menu> menuList = menuService.findAllCategoryMenu(categoryCode);
+        List<Menu> menuList = menuService.findAllCategoryMenu(categorycode);
         List<String> error = new ArrayList<>();
         error.add("해당하는 메뉴가 없습니다.");
         if (menuList.size() == 0) {
@@ -64,7 +77,8 @@ public class MenuController {
         return ResponseEntity.ok().body(menuDTOS);
     }
 
-    @PostMapping("/regist")
+    @PostMapping
+    @ApiOperation(value = "메뉴 등록 Api")
     public ResponseEntity<?>regist(MenuDTO menuDTO) {
         Menu menu = new Menu(menuDTO);
 
@@ -81,6 +95,7 @@ public class MenuController {
 
 
     @DeleteMapping("{menuCode}")
+    @ApiOperation(value = "메뉴 삭제 Api")
     public ResponseEntity<?> delete(@PathVariable int menuCode) {
         Menu menu = menuService.findMenuByCode(menuCode);
 
@@ -97,7 +112,8 @@ public class MenuController {
     }
 
 
-    @PutMapping("/update")
+    @PutMapping
+    @ApiOperation(value = "메뉴 수정 Api")
     public ResponseEntity<?> updateMenu(MenuDTO menuDTO) {
         Menu findMenu = menuService.findMenuByCode(menuDTO.getMenuCode());
 
