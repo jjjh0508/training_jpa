@@ -9,7 +9,6 @@ import com.jihwan.springdata.order.entity.OrderPk;
 import com.jihwan.springdata.menu.repository.MenuRepository;
 import com.jihwan.springdata.order.repository.OrdeMenuRepository;
 import com.jihwan.springdata.order.repository.OrderRepository;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

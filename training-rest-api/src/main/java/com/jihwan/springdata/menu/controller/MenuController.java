@@ -100,7 +100,7 @@ public class MenuController {
         Menu menu = menuService.findMenuByCode(menuCode);
 
         if (Objects.isNull(menu)) {
-            return ResponseEntity.status(404).body("메뉴가 존재하지 않습니다.");
+            return ResponseEntity.status(400).body("메뉴가 존재하지 않습니다.");
         }
         int result = menuService.deleteCode(menuCode);
 
@@ -118,7 +118,7 @@ public class MenuController {
         Menu findMenu = menuService.findMenuByCode(menuDTO.getMenuCode());
 
         if (Objects.isNull(findMenu)) {
-           return ResponseEntity.ok().body("데이터가 존재하지 않습니다.");
+           return ResponseEntity.status(400).body("데이터가 존재하지 않습니다.");
         }
 
 

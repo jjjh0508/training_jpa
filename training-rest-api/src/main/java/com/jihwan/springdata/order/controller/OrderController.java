@@ -63,7 +63,7 @@ public class OrderController {
 
 
         if (Objects.isNull(menuOrderDTO)) {
-            return ResponseEntity.status(404).body("잘못된 주문입니다.");
+            return ResponseEntity.status(400).body("잘못된 주문입니다.");
         }
         int result = orderService.regist(menuOrderDTO);
 
@@ -79,7 +79,7 @@ public class OrderController {
     public ResponseEntity<?> orderDelete(@PathVariable int orderCode) {
         Order findOrder = orderService.findOrderByCode(orderCode);
         if (Objects.isNull(findOrder)) {
-            ResponseEntity.status(404).body("주문이 없습니다.");
+            ResponseEntity.status(400).body("주문이 없습니다.");
         }
         int result = orderService.orderDelete(findOrder);
 
@@ -96,7 +96,7 @@ public class OrderController {
         Order findOrder = orderService.findOrderByCode(orderUpdateDTO.getOrderCode());
 
         if (Objects.isNull(findOrder)) {
-            return ResponseEntity.status(404).body("존재하지 않는 주문입니다.");
+            return ResponseEntity.status(400).body("존재하지 않는 주문입니다.");
         }
         int result = orderService.orderUpdate(orderUpdateDTO);
 

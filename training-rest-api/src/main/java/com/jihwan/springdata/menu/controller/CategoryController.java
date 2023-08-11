@@ -74,7 +74,7 @@ public class CategoryController {
     public ResponseEntity<?> updateCategory(CategoryDTO categoryDTO) {
         Category category = categoryService.findCategoryByCode(categoryDTO.getCategoryCode());
         if (Objects.isNull(category)) {
-            return ResponseEntity.ok().body("데이터가 존재하지 않습니다.");
+            return ResponseEntity.status(400).body("데이터가 존재하지 않습니다.");
         }
         int result = categoryService.update(category,categoryDTO);
 
@@ -93,7 +93,7 @@ public class CategoryController {
 
 
         if (Objects.isNull(category)) {
-           return ResponseEntity.status(404).body("카테고리가 존재하지 않습니다.");
+           return ResponseEntity.status(400).body("카테고리가 존재하지 않습니다.");
         }
 
 
